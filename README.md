@@ -26,33 +26,39 @@ Available Model Options:
 
 You can run the following models using Ollama:
 
-Llama 3 8B Model:
+### Llama 3 8B Model:
 ```
 ollama run llama3:8b
 ```
-Recommended EC2 Instance: g5.xlarge
+Recommended EC2 Instance: 
+g5.xlarge
 GPU: 1 NVIDIA A10 (24GB VRAM)
 Disk Space: ~16GB
 
-Llama 3 70B Model:
+### Llama 3 70B Model:
 ```
 ollama run llama3:70b
 ```
-Recommended EC2 Instance: g5.48xlarge
+Recommended EC2 Instance: 
+g5.48xlarge
 GPU: 8 NVIDIA A10 (192GB VRAM total)
 Disk Space: ~140GB
 
-Llama 2 7B Chat Model:
+### Llama 2 7B Chat Model:
 ```
 ollama run llama2:7b-chat
 ```
-Recommended EC2 Instance: t3.2xlarge (32GB RAM, suitable for running Llama 2 models)
+Recommended EC2 Instance: 
 
-Llama 3.2 Quantized 3B Model:
+t3.2xlarge (32GB RAM, suitable for running Llama 2 models)
+
+### Llama 3.2 Quantized 3B Model:
 ```
 ollama pull llama3.2:3b
 ```
-Recommended EC2 Instance: g4dn.xlarge
+Recommended EC2 Instance: 
+
+g4dn.xlarge
 GPU: 1 NVIDIA T4 (16GB VRAM)
 Disk Space: ~10GB
 
