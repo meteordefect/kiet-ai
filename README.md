@@ -20,57 +20,53 @@ This project contains Terraform configurations to deploy Ollama with Open WebUI 
    aws_region      = "your-region"
 
 
-## Mode;
+## Available Models and Hardware Requirements
 
-You can run the following models using Ollama:
+### High-Performance Models
 
-### Llama 3 8B Model:
-```
-ollama run llama3:8b
-```
-Recommended EC2 Instance: 
-g5.xlarge
-GPU: 1 NVIDIA A10 (24GB VRAM)
-Disk Space: ~16GB
+#### Llama 3 70B
+- Command: `ollama run llama3:70b`
+- Requirements:
+  - Instance: g5.48xlarge
+  - GPU: 8x NVIDIA A10 (192GB VRAM total)
+  - Storage: ~140GB
+- Use Case: Best for complex tasks requiring deep reasoning
 
+#### Llama 3 8B
+- Command: `ollama run llama3:8b`
+- Requirements:
+  - Instance: g5.xlarge
+  - GPU: 1x NVIDIA A10 (24GB VRAM)
+  - Storage: ~16GB
+- Use Case: Good balance of performance and resource usage
 
-### Llama 3 70B Model:
-```
-ollama run llama3:70b
-```
-Recommended EC2 Instance: 
-g5.48xlarge
-GPU: 8 NVIDIA A10 (192GB VRAM total)
-Disk Space: ~140GB
+### Mid-Range Models
 
+#### Llama 2 7B Chat
+- Command: `ollama run llama2:7b-chat`
+- Requirements:
+  - Instance: t3.2xlarge
+  - Memory: 32GB RAM
+  - Storage: ~14GB
+- Use Case: Efficient for general chat applications
 
-### Llama 2 7B Chat Model:
-```
-ollama run llama2:7b-chat
-```
-Recommended EC2 Instance: 
+### Lightweight Models
 
-t3.2xlarge (32GB RAM, suitable for running Llama 2 models)
+#### Llama 3.2 3B
+- Command: `ollama pull llama3.2:3b`
+- Requirements:
+  - Instance: g4dn.xlarge
+  - GPU: 1x NVIDIA T4 (16GB VRAM)
+  - Storage: ~10GB
+- Use Case: Fast inference, suitable for production deployments
 
-
-### Llama 3.2 Quantized 3B Model:
-```
-ollama pull llama3.2:3b
-```
-Recommended EC2 Instance: 
-
-g4dn.xlarge
-GPU: 1 NVIDIA T4 (16GB VRAM)
-Disk Space: ~10GB
-
-### Llama 3.2 Quantized 1B Model: 
-```
-ollama pull llama3.2:1b
-```
-Recommended EC2 Instance: 
-g4dn.medium
-GPU: 1 NVIDIA T4 (16GB VRAM)
-Disk Space: ~5GB
+#### Llama 3.2 1B
+- Command: `ollama pull llama3.2:1b`
+- Requirements:
+  - Instance: g4dn.medium
+  - GPU: 1x NVIDIA T4 (16GB VRAM)
+  - Storage: ~5GB
+- Use Case: Resource-efficient, good for simple tasks
 
 
 ## Recommendations
