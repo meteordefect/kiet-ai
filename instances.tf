@@ -1,8 +1,8 @@
 # Ollama Server
 resource "aws_instance" "ollama" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with appropriate AMI for your region
-  instance_type = "t3.xlarge"  # 16GB RAM instance
-  key_name      = "your-key-pair-name"  # Replace with your key pair
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "g4dn.medium"  # Changed to match the model requirements
+  key_name      = "your-key-pair-name"
 
   vpc_security_group_ids = [aws_security_group.ollama.id]
   subnet_id              = data.aws_subnet.existing.id
@@ -46,15 +46,15 @@ resource "aws_instance" "ollama" {
               nohup /root/pull_model.sh &
 
               # Add cron job to check model
-              echo "*/5 * * * * /usr/bin/ollama list | grep llama3 || /root/pull_model.sh" | crontab -
+              echo "*/5 * * * * /usr/bin/ollama list | grep llama3.2:1b || /root/pull_model.sh" | crontab -
               EOF
 }
 
 # WebUI Server
 resource "aws_instance" "webui" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with appropriate AMI for your region
+  ami           = "ami-0c55b159cbfafe1f0"
   instance_type = "t2.micro"
-  key_name      = "your-key-pair-name"  # Replace with your key pair
+  key_name      = "your-key-pair-name"
 
   vpc_security_group_ids = [aws_security_group.webui.id]
   subnet_id              = data.aws_subnet.existing.id
@@ -79,12 +79,12 @@ resource "aws_instance" "webui" {
               # Create readiness check script
               cat <<EOT > /root/check_ollama.sh
               #!/bin/bash
-              until curl -s http://$OLLAMA_IP:11434/api/tags | grep llama2
+              until curl -s http://$OLLAMA_IP:11434/api/tags | grep llama3.2:1b
               do
-                echo "Waiting for Llama2 model..."
+                echo "Waiting for Llama3.2 1B model..."
                 sleep 60
               done
-              echo "Llama2 model is available!"
+              echo "Llama3.2 1B model is available!"
               EOT
 
               chmod +x /root/check_ollama.sh
