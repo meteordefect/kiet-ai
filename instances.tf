@@ -38,7 +38,7 @@ resource "aws_instance" "ollama" {
               cat <<EOT > /root/pull_model.sh
               #!/bin/bash
               sleep 60
-              ollama pull llama2
+              ollama pull llama3.2:1b
               echo "Model pull completed at $(date)" >> /root/model_pull.log
               EOT
 
@@ -46,7 +46,7 @@ resource "aws_instance" "ollama" {
               nohup /root/pull_model.sh &
 
               # Add cron job to check model
-              echo "*/5 * * * * /usr/bin/ollama list | grep llama2 || /root/pull_model.sh" | crontab -
+              echo "*/5 * * * * /usr/bin/ollama list | grep llama3 || /root/pull_model.sh" | crontab -
               EOF
 }
 
