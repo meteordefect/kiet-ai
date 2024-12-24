@@ -1,5 +1,0 @@
-vpc_id          = "vpc-xxxxx"
-subnet_id       = "subnet-xxxxx"
-key_name        = "your-key-pair"
-webui_password  = "your-password"
-aws_region      = "us-west-2"
