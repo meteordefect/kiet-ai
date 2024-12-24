@@ -4,6 +4,7 @@ resource "aws_security_group" "ollama" {
   description = "Security group for Ollama server"
   vpc_id      = data.aws_vpc.existing.id
 
+  # SSH access from anywhere
   ingress {
     from_port   = 22
     to_port     = 22
@@ -11,21 +12,25 @@ resource "aws_security_group" "ollama" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Ollama API access from WebUI security group
+  ingress {
+    from_port       = 11434
+    to_port         = 11434
+    protocol        = "tcp"
+    security_groups = [aws_security_group.webui.id]
+  }
+
+  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
 
-resource "aws_security_group_rule" "ollama_from_webui" {
-  type                     = "ingress"
-  from_port               = 11434
-  to_port                 = 11434
-  protocol                = "tcp"
-  source_security_group_id = aws_security_group.webui.id
-  security_group_id       = aws_security_group.ollama.id
+  tags = {
+    Name = "ollama-sg"
+  }
 }
 
 # Security group for WebUI server
@@ -53,5 +58,9 @@ resource "aws_security_group" "webui" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+    tags = {
+    Name = "webui-sg"
   }
 }

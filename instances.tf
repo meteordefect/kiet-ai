@@ -1,3 +1,4 @@
+# To check the logs on these machines: sudo cat /var/log/cloud-init-output.log
 # Get latest Ubuntu AMI
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -73,12 +74,16 @@ resource "aws_instance" "ollama" {
 
 resource "aws_instance" "webui" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name      = aws_key_pair.ollama_key.key_name
   associate_public_ip_address = true
 
   vpc_security_group_ids = [aws_security_group.webui.id]
   subnet_id              = data.aws_subnet.existing.id
+
+  root_block_device {
+    volume_size = 10
+  }
 
   tags = {
     Name = "webui-server"
@@ -90,44 +95,44 @@ resource "aws_instance" "webui" {
               apt-get install -y docker.io curl
               systemctl start docker
               systemctl enable docker
-              
+
               OLLAMA_IP=${aws_instance.ollama.private_ip}
-              
+
               # Create check script first
               cat <<EOT > /root/check_ollama.sh
               #!/bin/bash
               max_attempts=60  # Will try for 60 minutes
               attempt=1
-              
+
               echo "Starting to check for Ollama server availability..."
               while true; do
                 if [ \$attempt -gt \$max_attempts ]; then
                   echo "Timeout after \$max_attempts minutes waiting for Ollama"
                   exit 1
                 fi
-                
+
                 # Check directly for model in tags endpoint
-                if curl -s http://\$OLLAMA_IP:11434/api/tags | grep -q "llama3.2:1b"; then
+                if curl -s http://${aws_instance.ollama.private_ip}:11434/api/tags | grep -q "llama3.2:1b"; then
                     echo "Model llama3.2:1b is available!"
                     break
                 else
                     echo "Attempt \$attempt: Waiting for Ollama server and model..."
                 fi
-                
+
                 attempt=\$((attempt + 1))
                 sleep 60
               done
-              
+
               # Start WebUI once Ollama is ready
               docker run -d -p 80:8080 \\
-                -e OLLAMA_API_BASE_URL=http://\$OLLAMA_IP:11434/api \\
-                -e PASSWORD=your_chosen_password \\
+                -e OLLAMA_API_BASE_URL=http://${aws_instance.ollama.private_ip}:11434 \\
+                -e PASSWORD=${var.webui_password} \\
                 --name open-webui --restart always \\
                 ghcr.io/open-webui/open-webui:main
-              
+
               echo "WebUI setup completed!"
               EOT
-              
+
               chmod +x /root/check_ollama.sh
               /root/check_ollama.sh
               EOF
