@@ -1,0 +1,12 @@
+# AWS Region where resources will be created
+aws_region = "ap-southeast-2"  # Example: ap-southeast-2, us-west-2, eu-west-1
+
+# VPC and Subnet IDs from your existing AWS infrastructure
+vpc_id    = "vpc-xxxxxxxxxxxxxxxxx"  # Example format: vpc-0123456789abcdef0
+subnet_id = "subnet-xxxxxxxxxxxxxxxxx"  # Example format: subnet-0123456789abcdef0
+
+# SSH key name - will be created from your public key
+key_name = "ollama-key"
+
+# WebUI password (keep this secure!)
+webui_password = "CHANGE_THIS_PASSWORD"  # Minimum 12 characters, mix of letters, numbers, and symbols

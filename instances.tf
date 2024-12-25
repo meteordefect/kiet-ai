@@ -125,8 +125,9 @@ resource "aws_instance" "webui" {
 
               # Start WebUI once Ollama is ready
               docker run -d -p 80:8080 \\
-                -e OLLAMA_API_BASE_URL=http://${aws_instance.ollama.private_ip}:11434 \\
+                -e OLLAMA_BASE_URL=http://${aws_instance.ollama.private_ip}:11434 \\
                 -e PASSWORD=${var.webui_password} \\
+                -v open-webui:/app/backend/data \\
                 --name open-webui --restart always \\
                 ghcr.io/open-webui/open-webui:main
 
