@@ -1,4 +1,4 @@
-# Ollama WebUI AWS Infrastructure
+# Private, Secure AI Chat Similar to ChatGPT Automated Deployment on AWS Infrastructure (Ollama WebUI) 
 
 This project contains Terraform configurations to deploy Ollama with Open WebUI on AWS EC2.
 
